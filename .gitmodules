@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/Tochy112/COM769_CW2_FE.git
+[submodule "backend"]
+	path = backend
+	url = https://github.com/Tochy112/COM769_CW2_BE.git
