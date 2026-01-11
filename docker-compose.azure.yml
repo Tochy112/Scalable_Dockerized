@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ${ACR_LOGIN_SERVER}/backend:${IMAGE_TAG}
+    container_name: backend
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=3306
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_SYNC=false
+      - jwtSecretKey=${JWT_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
+      - AZURE_STORAGE_CONTAINER=blobstorage
+      - AZURE_STORAGE_ACCOUNT_NAME=${AZURE_STORAGE_ACCOUNT_NAME}
+      - AZURE_STORAGE_ACCOUNT_KEY=${AZURE_STORAGE_ACCOUNT_KEY}
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+
+  frontend:
+    image: ${ACR_LOGIN_SERVER}/frontend:${IMAGE_TAG}
+    container_name: frontend
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
